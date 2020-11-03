@@ -1,3 +1,5 @@
 *.pdf
 *.bat
 *.docx
+
+ml_algorithms/__pycache__
