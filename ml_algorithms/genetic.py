@@ -56,32 +56,32 @@ class Genetic:
         testlist = [1, 2, 32, 8, 17, 19, 42, 13, 0]
 
         # Write code to a python file.
-        with open("seqGeneticSearch.py", "w") as file:
+        with open("seq_genetic_search.py", "w") as file:
             file.write(code)
 
         # Scores the code based on expected outputs.
         try:
-            import seqGeneticSearch
+            import seq_genetic_search
 
-            if seqGeneticSearch.sequentialSearch(testlist, 13) == True:
+            if seq_genetic_search.sequentialSearch(testlist, 13) == True:
                 score += 1
-            if seqGeneticSearch.sequentialSearch(testlist, 130) == False:
+            if seq_genetic_search.sequentialSearch(testlist, 130) == False:
                 score += 1
-            if seqGeneticSearch.sequentialSearch(testlist, 19) == True:
+            if seq_genetic_search.sequentialSearch(testlist, 19) == True:
                 score += 1
-            if seqGeneticSearch.sequentialSearch(testlist, 42) == True:
+            if seq_genetic_search.sequentialSearch(testlist, 42) == True:
                 score += 1
-            if seqGeneticSearch.sequentialSearch(testlist, 81) == False:
+            if seq_genetic_search.sequentialSearch(testlist, 81) == False:
                 score += 1
-            if seqGeneticSearch.sequentialSearch(testlist, 17) == True:
+            if seq_genetic_search.sequentialSearch(testlist, 17) == True:
                 score += 1
-            if seqGeneticSearch.sequentialSearch(testlist, 14) == False:
+            if seq_genetic_search.sequentialSearch(testlist, 14) == False:
                 score += 1
-            if seqGeneticSearch.sequentialSearch(testlist, 1) == True:
+            if seq_genetic_search.sequentialSearch(testlist, 1) == True:
                 score += 1
-            if seqGeneticSearch.sequentialSearch(testlist, 420) == False:
+            if seq_genetic_search.sequentialSearch(testlist, 420) == False:
                 score += 1
-            if seqGeneticSearch.sequentialSearch(testlist, 0) == True:
+            if seq_genetic_search.sequentialSearch(testlist, 0) == True:
                 score += 1
         except:
             score = -1
