@@ -1,5 +1,5 @@
 import numpy as np, pandas as pd
-from ml_algorithms import DecisionTree
+from ml_algorithms import DecisionTree, Genetic
 
 def main():
     # ----------------------------------------------------------- #
@@ -14,14 +14,14 @@ def main():
     # Use the tree to predict.
     test_data = pd.read_csv("datasets/decision_tree/titanic_test.csv").fillna(0)
     test_labels = tree.predict(test_data.to_numpy())
-"""    
+    """    
     # Output the predicted values to a CSV.
     pd.DataFrame({'PassengerId': test_data['PassengerId'],
                     'Survived': test_labels}).to_csv("dt_submission.csv")
 
     # Output the tree to an image file.
     tree.show_tree(train_data.columns, ['No', 'Yes'])
-"""
+    """
     # ----------------------------------------------------------- #
     #                            SVM                              #
     # ----------------------------------------------------------- #
@@ -32,6 +32,27 @@ def main():
     #                          Genetic                            #
     # ----------------------------------------------------------- #
 
+    correct_code = """def sequentialSearch(alist, item):
+        pos = 0
+        found = False
+        while pos < len(alist) and not found:
+            if alist[pos] == item:
+                found = True
+            else:
+                pos = pos+1
+        return found"""
+    start_code = """def sequentialSearch(alist, item):
+        pos = 0
+        found = False
+        while pos < len(alist) and not found:
+            if alist[pos] != item:
+                found = True
+            else:
+                pos = pos+1
+        return found"""
+
+    genetic = Genetic(start_code, correct_code)
+    genetic.execute()
 
 
 if __name__ == "__main__":
