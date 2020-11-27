@@ -10,6 +10,7 @@ class Genetic:
         self.__offspring = offspring
         self.__max_steps = max_steps
 
+        self.__codes = list()
         self.__codes.append(start_code)
     
 
@@ -25,32 +26,32 @@ class Genetic:
             j = 0
 
             # Generate offspring.
-            while len(offspring) < self.__offspring and j < self.__steps:
+            while len(offspring) < self.__offspring and j < self.__max_steps:
                 j += 1
-                code = self.crossover()
-                code = self.mutate(code)
+                code = self.__crossover()
+                code = self.__mutate(code)
 
-                if fitness(code) > 5:
+                if self.__fitness(code) > 5:
                     offspring.append(code)
 
             # Make new generation from fit offspring of the former.
             if len(offspring) > 0:
-                codes = offspring
+                self.__codes = offspring
         
         return self.satisfied()
 
 
-    def crossover(self):
+    def __crossover(self):
         """ Cross-over instructions (e.g., change + to *). """
         return self.__codes[0].replace("True1", "True")
 
 
-    def mutate(self, code):
+    def __mutate(self, code):
         """ Mutate the code (e.g., change the order of the instructions in the code). """
         return code.replace("False1", "False")
 
 
-    def fitness(self, code):
+    def __fitness(self, code):
         """ Fitness function for the given code. Score is returned (if -1, the code was malformed somewhere). """
         score = 0
         testlist = [1, 2, 32, 8, 17, 19, 42, 13, 0]
