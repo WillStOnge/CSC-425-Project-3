@@ -8,9 +8,9 @@ def main():
 
     # Train the tree.
     train_data = pd.read_csv("datasets/decision_tree/titanic_train.csv").fillna(0)
-    tree = DecisionTree(train_data.to_numpy()[:, :-1], train_data.to_numpy()[:, -1])
-    tree.save_tree(train_data.columns, ['No', 'Yes'])
-
+    tree = DecisionTree(train_data.iloc[:, :-1], train_data.iloc[:, -1])
+    tree.show_tree(train_data.columns, ['No', 'Yes'])
+"""
     # Use the tree to predict.
     test_data = pd.read_csv("datasets/decision_tree/titanic_test.csv").fillna(0)
     test_labels = tree.predict(test_data.to_numpy())
@@ -20,8 +20,8 @@ def main():
                     'Survived': test_labels}).to_csv("dt_submission.csv")
 
     # Output the tree to an image file.
-    tree.save_tree(train_data.columns, ['No', 'Yes'])
-
+    tree.show_tree(train_data.columns, ['No', 'Yes'])
+"""
     # ----------------------------------------------------------- #
     #                            SVM                              #
     # ----------------------------------------------------------- #
