@@ -48,7 +48,7 @@ def main():
         if alist[pos] != item:
             found = True
         else:
-            pos = pos+1
+            pos = pos*2
     return found"""
 
     genetic = Genetic(start_code, correct_code)

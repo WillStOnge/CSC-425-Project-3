@@ -1,10 +1,11 @@
+import random
 class Genetic:
     __correct_code: str
     __codes: list
     __offspring: int
     __max_steps: int
 
-    def __init__(self, start_code, correct_code, offspring = 6, max_steps = 10):
+    def __init__(self, start_code, correct_code, offspring = 2, max_steps = 10):
         """ Initializes the genetic alorithm. """
         self.__correct_code = correct_code
         self.__offspring = offspring
@@ -12,6 +13,15 @@ class Genetic:
 
         self.__codes = list()
         self.__codes.append(start_code)
+        self.__codes.append("""def sequentialSearch(alist, item):
+    pos = 0
+    found = False
+    while pos > len(alist) and not found:
+        if alist[pos] == item:
+            found = True
+        else:
+            pos = pos+1
+    return found""")
     
 
     def execute(self):
@@ -28,7 +38,7 @@ class Genetic:
             # Generate offspring.
             while len(offspring) < self.__offspring and j < self.__max_steps:
                 j += 1
-                code = self.__crossover()
+                code = self.__crossover(self.__codes[0], self.__codes[1], len(offspring))
                 code = self.__mutate(code)
 
                 if self.__fitness(code) > 5:
@@ -41,14 +51,31 @@ class Genetic:
         return self.satisfied()
 
 
-    def __crossover(self):
-        """ Cross-over instructions (e.g., change + to *). """
-        return self.__codes[0].replace("True1", "True")
+    def __crossover(self, parent1, parent2, num):
+        if num == 0:
+            return parent1[0:int(len(parent1)/2)] + parent2[int(len(parent1)/2):len(parent2)]
+        return parent2[0:int(len(parent2)/2)] + parent1[int(len(parent2)/2):len(parent1)]
 
 
     def __mutate(self, code):
-        """ Mutate the code (e.g., change the order of the instructions in the code). """
-        return code.replace("False1", "False")
+        if random.randint(0, 99) < 30:
+            selectMutation = random.randint(0, 2)
+            if selectMutation == 0:
+                if "==" in code:
+                    code.replace("==", "!=")
+                else:
+                    code.replace("!=", "==")
+            elif selectMutation == 1:
+                if "<" in code:
+                    code.replace("<", ">")
+                else:
+                    code.replace(">", "<")
+            else:
+                if "*2" in code:
+                    code.replace("*2", "+1")
+                else:
+                    code.replace("+1", "*2")
+        return code
 
 
     def __fitness(self, code):
