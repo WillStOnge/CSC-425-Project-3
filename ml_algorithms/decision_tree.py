@@ -21,3 +21,4 @@ class DecisionTree:
         fig = plt.figure(figsize=(100,80))
         tree.plot_tree(self.clf, feature_names=feature_labels, class_names=target_labels, filled=True)
         fig.savefig("decision_tree.jpeg")
+        

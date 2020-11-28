@@ -1,118 +1,114 @@
-# example code for genetic algorithm
-# zjx
-# fall 2020
+import random
+class Genetic:
+    __correct_code: str
+    __codes: list
+    __offspring: int
+    __max_steps: int
 
-import sys
+    def __init__(self, start_codes: list, correct_code: str, offspring = 2, max_steps = 10):
+        """ Initializes the genetic alorithm. """
+        self.__correct_code = correct_code
+        self.__offspring = offspring
+        self.__max_steps = max_steps
+        self.__codes = start_codes
+    
 
-# parents array
-codes = []
-# code piece for sequential search (you can change it to other code if you want)
-code="""def sequentialSearch(alist, item):
-    pos = 0
-    found = False1
-    while pos < len(alist) and not found:
-        if alist[pos] == item:
-            found = True1
-        else:
-            pos = pos+1
-    return found"""
-# use your own strategies to generate initial code pieces as the parents
-# here I just randomly add three original code pieces as the parents seed (Selfing breeding.....)
-codes.append(code);
-codes.append(code);
-codes.append(code);
-#print(codes)
-#exec(code)
-# you can use your own test array list
-testlist = [1, 2, 32, 8, 17, 19, 42, 13, 0];
-#try:
-#    print(sequentialSearch(testlist, 13))
-#except:
-#    print("Unexpected error:", sys.exc_info()[0])
+    def execute(self):
+        """ Runs the genetic algorithm. If true is returned, the algorithm found the correct code. """
+        offspring = []
+        i = 0
 
-# number of offsprings, you can change it according to your preferences
-offs_per_pop = 6;
-# step size to stop the code for running infinite loops, you can change it according to your preferences
-steps = 10;
+        # Run until it finds the correct code.
+        while not self.satisfied() and i < self.__max_steps:
+            i += 1
+            offspring = []
+            j = 0
 
-# cross-over instructions  (e.g., two arithmetic expressions, you can change + to *)
-def crossover():
-    # cross over parts of code_temp
-    code_temp = codes[0]
-    code_temp = code_temp.replace("True1","True");
-    return code_temp;
-# mutate the code (e.g., change the order of the instructions in the code. As the code is ordered line by line,
-# you can use a line of code as the mutate target)
-def mutate(code_temp):
-    # mutate parts of the code_temp
-    code_temp = code_temp.replace("False1","False");
-    return code_temp;
-# use some 
-def fitness(code_temp):
-    score = 0;
-    # you can use your own test array list
-    testlist = [1, 2, 32, 8, 17, 19, 42, 13, 0];
-    #exec(code_temp);
-    #test example
-    # as we may have "malformed" offspring, we use try clause to keep program runnning without stop the program
-    try:
-        if(sequentialSearch(testlist, 13) == True):
-            score+=1;
-        if(sequentialSearch(testlist, 130) == False):
-            score+=1;  
-        if(sequentialSearch(testlist, 19) == True):
-            score+=1; 
-        if(sequentialSearch(testlist, 42) == True):
-            score+=1; 
-        if(sequentialSearch(testlist, 81) == False):
-            score+=1; 
-        if(sequentialSearch(testlist, 17) == True):
-            score+=1; 
-        if(sequentialSearch(testlist, 14) == False):
-            score+=1; 
-        if(sequentialSearch(testlist, 1) == True):
-            score+=1; 
-        if(sequentialSearch(testlist, 420) == False):
-            score+=1; 
-        if(sequentialSearch(testlist, 0) == True):
-            score+=1; 
-    except:
-        print("Unexpected error:", sys.exc_info())
-        score = -1;
-    return score;
-# test if the program fulfills the requirements, you can change it accordingly your preferences
-def satisfied(codes):
-    original_code="""def sequentialSearch(alist, item):
-    pos = 0
-    found = False
-    while pos < len(alist) and not found:
-        if alist[pos] == item:
-            found = True
-        else:
-            pos = pos+1
-    return found"""
-    for str_code in codes:
-        if(str_code == original_code):
-            print("Found the right code! Exit~!")
-            return True;    
-    return False;
+            # Generate offspring.
+            while len(offspring) < self.__offspring and j < self.__max_steps:
+                j += 1
+                code = self.__crossover(self.__codes[0], self.__codes[1], len(offspring))
+                code = self.__mutate(code)
 
-offspring = []
-index = 0;
-# run until find the target
-while not satisfied(codes) and index < steps:
-    # generate offsprings
-    index +=1;
-    offspring = [];
-    index1=0;
-    while len(offspring) < offs_per_pop and index1 < steps:
-        index1+=1;
-        code_temp = "";
-        code_temp = crossover();
-        code_temp = mutate(code_temp);
-        exec(code_temp)
-        if(fitness(code_temp) > 5):
-            offspring.append(code_temp);
-    # substitute the new generation as the parents
-    if len(offspring) > 0:
-        codes = offspring
+                if self.__fitness(code) > 5:
+                    offspring.append(code)
+
+            # Make new generation from fit offspring of the former.
+            if len(offspring) > 0:
+                self.__codes = offspring
+        
+        return self.satisfied()
+
+
+    def __crossover(self, parent1, parent2, num):
+        if num == 0:
+            return parent1[0:int(len(parent1)/2)] + parent2[int(len(parent1)/2):len(parent2)]
+        return parent2[0:int(len(parent2)/2)] + parent1[int(len(parent2)/2):len(parent1)]
+
+
+    def __mutate(self, code):
+        if random.randint(0, 99) < 30:
+            selectMutation = random.randint(0, 2)
+            if selectMutation == 0:
+                if "==" in code:
+                    code.replace("==", "!=")
+                else:
+                    code.replace("!=", "==")
+            elif selectMutation == 1:
+                if "<" in code:
+                    code.replace("<", ">")
+                else:
+                    code.replace(">", "<")
+            else:
+                if "*2" in code:
+                    code.replace("*2", "+1")
+                else:
+                    code.replace("+1", "*2")
+        return code
+
+
+    def __fitness(self, code):
+        """ Fitness function for the given code. Score is returned (if -1, the code was malformed somewhere). """
+        score = 0
+        testlist = [1, 2, 32, 8, 17, 19, 42, 13, 0]
+
+        # Write code to a python file.
+        with open("seq_genetic_search.py", "w") as file:
+            file.write(code)
+
+        # Scores the code based on expected outputs.
+        try:
+            import seq_genetic_search
+
+            if seq_genetic_search.sequentialSearch(testlist, 13) == True:
+                score += 1
+            if seq_genetic_search.sequentialSearch(testlist, 130) == False:
+                score += 1
+            if seq_genetic_search.sequentialSearch(testlist, 19) == True:
+                score += 1
+            if seq_genetic_search.sequentialSearch(testlist, 42) == True:
+                score += 1
+            if seq_genetic_search.sequentialSearch(testlist, 81) == False:
+                score += 1
+            if seq_genetic_search.sequentialSearch(testlist, 17) == True:
+                score += 1
+            if seq_genetic_search.sequentialSearch(testlist, 14) == False:
+                score += 1
+            if seq_genetic_search.sequentialSearch(testlist, 1) == True:
+                score += 1
+            if seq_genetic_search.sequentialSearch(testlist, 420) == False:
+                score += 1
+            if seq_genetic_search.sequentialSearch(testlist, 0) == True:
+                score += 1
+        except:
+            score = -1
+
+        return score
+
+
+    def satisfied(self):
+        """ Test if the program fulfills the requirements. """
+        for str_code in self.__codes:
+            if str_code == self.__correct_code:
+                return True
+        return False
