@@ -5,7 +5,7 @@ def main():
     # ----------------------------------------------------------- #
     #                       Decision Tree                         #
     # ----------------------------------------------------------- #
-    """
+
     # Train the tree.
     train_data = pd.read_csv("datasets/decision_tree/titanic_train.csv").fillna(0)
     tree = DecisionTree(train_data.iloc[:, :-1], train_data.iloc[:, -1])
@@ -14,7 +14,7 @@ def main():
     # Use the tree to predict.
     test_data = pd.read_csv("datasets/decision_tree/titanic_test.csv").fillna(0)
     test_labels = tree.predict(test_data.to_numpy())
-        
+    """
     # Output the predicted values to a CSV.
     pd.DataFrame({'PassengerId': test_data['PassengerId'],
                     'Survived': test_labels}).to_csv("dt_submission.csv")

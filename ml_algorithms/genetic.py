@@ -1,4 +1,5 @@
 import random
+
 class Genetic:
     __correct_code: str
     __codes: list

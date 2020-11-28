@@ -18,7 +18,7 @@ class DecisionTree:
 
     def save_tree(self, feature_labels, target_labels):
         """ Saves an image of the decision tree. """
-        fig = plt.figure(figsize=(100,80))
+        fig = plt.figure(figsize=(100, 80))
         tree.plot_tree(self.clf, feature_names=feature_labels, class_names=target_labels, filled=True)
         fig.savefig("decision_tree.jpeg")
         
