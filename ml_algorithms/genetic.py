@@ -5,23 +5,12 @@ class Genetic:
     __offspring: int
     __max_steps: int
 
-    def __init__(self, start_code, correct_code, offspring = 2, max_steps = 10):
+    def __init__(self, start_codes: list, correct_code: str, offspring = 2, max_steps = 10):
         """ Initializes the genetic alorithm. """
         self.__correct_code = correct_code
         self.__offspring = offspring
         self.__max_steps = max_steps
-
-        self.__codes = list()
-        self.__codes.append(start_code)
-        self.__codes.append("""def sequentialSearch(alist, item):
-    pos = 0
-    found = False
-    while pos > len(alist) and not found:
-        if alist[pos] == item:
-            found = True
-        else:
-            pos = pos+1
-    return found""")
+        self.__codes = start_codes
     
 
     def execute(self):
