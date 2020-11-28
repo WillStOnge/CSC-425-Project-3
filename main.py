@@ -32,6 +32,7 @@ def main():
     #                          Genetic                            #
     # ----------------------------------------------------------- #
 
+    start_codes = list()
     correct_code = """def sequentialSearch(alist, item):
     pos = 0
     found = False
@@ -41,7 +42,7 @@ def main():
         else:
             pos = pos+1
     return found"""
-    start_code = """def sequentialSearch(alist, item):
+    start_codes.append("""def sequentialSearch(alist, item):
     pos = 0
     found = False
     while pos < len(alist) and not found:
@@ -49,13 +50,22 @@ def main():
             found = True
         else:
             pos = pos*2
-    return found"""
+    return found""")
+    start_codes.append("""def sequentialSearch(alist, item):
+    pos = 0
+    found = False
+    while pos > len(alist) and not found:
+        if alist[pos] == item:
+            found = True
+        else:
+            pos = pos+1
+    return found""")
 
-    genetic = Genetic(start_code, correct_code)
+    genetic = Genetic(start_codes, correct_code)
     if genetic.execute():
-        print("Correct code found")
+        print("Genetic: Correct code found")
     else:
-        print("Correct code was not found")
+        print("Genetic: Correct code was not found")
 
 
 if __name__ == "__main__":
