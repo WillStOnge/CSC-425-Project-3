@@ -1,6 +1,8 @@
 *.pdf
 *.bat
 *.docx
+*.jpeg
+seq_genetic_search.py
 
 ml_algorithms/__pycache__
 test/__pycache__
